@@ -112,12 +112,14 @@ int main (int argc, char *argv[]) {
     if (childpid == 0){
       break;
     }
+	printf("Creating new child pid %d at my time %d.%d", childpid, sharedClock->sec, sharedClock->nano);
     msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
 	spawnCount++;
   }
 //  run a child
   if (childpid  == 0){
-    char *args[]={"./child",NULL};
+	int name = getpid();
+    char *args[]={"./child", name};
     execvp(args[0], args); 
   }
   if(spawnCount != spawns){
