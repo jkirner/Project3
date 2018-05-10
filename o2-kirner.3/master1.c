@@ -162,6 +162,7 @@ int main (int argc, char *argv[]) {
   }
   while (spawnCount > 0){
   wait(NULL);
-}
+  spawnCount--;
+  }
   return 0;
 }
