@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99
+CFLAGS = -std=gnu99
 OBJS1 = master1.o
 OBJS2 = child.o
 PROG1 = master

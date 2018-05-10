@@ -20,7 +20,7 @@ typedef struct{
   int bornSec;
   int bornNano;
   int diedSec;
-  int diedNano
+  int diedNano;
 }info;
 typedef struct{
   int nano;
@@ -35,7 +35,7 @@ int main (int argc, char *argv[]) {
   pid_t childpid;
   int spawns = 5;
   int secs = 20;
-  char fileName[100]= "log.txt";
+  char* fileName= "log.txt";
   int option;
 
 // This allows for the -n and help if you dont know what to do
@@ -43,7 +43,7 @@ int main (int argc, char *argv[]) {
       switch(option){
         case 's': spawns = atoi(optarg);
         break;
-	    case 'l': *fileName = optarg;
+	    case 'l': fileName = optarg;
 	    break;
 	    case 't': secs = atoi(optarg);
 	    break; 

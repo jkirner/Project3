@@ -20,7 +20,7 @@ typedef struct{
   int bornSec;
   int bornNano;
   int diedSec;
-  int diedNano
+  int diedNano;
 }info;
 typedef struct{
   int nano;
