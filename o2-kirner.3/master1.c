@@ -82,6 +82,7 @@ int main (int argc, char *argv[]) {
   int totalSpawns = 0;
   int msgqid;
   int msgqid2;
+  int msgqid3;
   mymsg dummyMes;
   dummyMes.type = 2;
 // create message queue
