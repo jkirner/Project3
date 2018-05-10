@@ -13,24 +13,23 @@
 #include <sys/sem.h>
 #include <sys/msg.h>
 #include <sys/errno.h>
-typedef struct;
-struct info{
+typedef struct info{
   int childPid;
   int worked;
   int bornSec;
   int bornNano;
   int diedSec;
   int diedNano
-}
-struct clock{
+};
+typedef struct clock{
   int nano = 0;
   int sec = 0;
-}
-struct mymsg{
+};
+typedef struct mymsg{
   long type;
   info myinfo;
   bool wasKilled = 0;
-}
+};
 
 int main () {
   info myinfo;
