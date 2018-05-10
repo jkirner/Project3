@@ -64,8 +64,8 @@ int main (int argc, char *argv[]) {
       }
 	  return 1;
     }
-  printf("%d %d %d", myinfo.childPid, sharedClock.sec, sharedClock.nano);
-  if ((msgrcv (msgqid2, &dummyMes, sizeof(dummyMes), 0)) == -1) {
+  printf("%d %d %d", myinfo.childPid, sharedClock->sec, sharedClock->nano);
+  if ((msgrcv (msgqid2, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
 	  if (shmdt (sharedClock)) {
         perror (("%s: Error: Failed to detach shared memory", argv[0]));
@@ -78,7 +78,7 @@ int main (int argc, char *argv[]) {
 	  return 1;
     }
   int stuffToDo = 50000 + 1;
-  sharedClock.nano += stuffToDo;
+  sharedClock->nano += stuffToDo;
   
   dummyMes.myinfo = myinfo;
   msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
