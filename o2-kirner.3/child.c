@@ -52,7 +52,7 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	myinfo.childPid = atoi(argv[1]);
-
+	printf("%s/n", argv[1]);
 	msgqid = msgget (412, IPC_CREAT | 0777);
 	msgqid2 = msgget (413, IPC_CREAT | 0777);
 	msgqid3 = msgget (414, IPC_CREAT | 0777);
