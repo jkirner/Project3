@@ -71,7 +71,7 @@ int main (int argc, char *argv[]) {
 	myinfo.bornSec = sharedClock->sec;
 	myinfo.bornNano = sharedClock->nano;
 	msgsnd (msgqid4, &dummyMes, sizeof(dummyMes),	0);
-	srand(myinfo.childPid);
+	srand(time());
 	int stuffToDo = rand()%1000000 + 1;
 	myinfo.worked = 0;
 	while(1){
