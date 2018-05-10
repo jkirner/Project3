@@ -187,9 +187,9 @@ int main (int argc, char *argv[]) {
 			wait(NULL);
 		if(sharedClock->sec < secs){
 			sharedClock->nano += 100;
-			if (sharedClock->nano > 999999999){
+			if (sharedClock->nano > 999999){
 				sharedClock->sec++;
-				sharedClock->nano -= 1000000000;
+				sharedClock->nano -= 1000000;
 			}
 			childpid = fork();
 			if(childpid == -1){
@@ -249,7 +249,7 @@ int main (int argc, char *argv[]) {
 		tempnano = sharedClock->nano - dummyMes.myinfo.bornNano;
 		if (tempnano < 0){
 			tempsec--;
-			tempnano += 1000000000;
+			tempnano += 1000000;
 		}
 		fprintf(fp,"Master: Child pid %d is terminated at my time %d.%d because the time has expired. It reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
 		wait(NULL);
