@@ -32,7 +32,7 @@ typedef struct{
 }mymsg;
 
 int main (int argc, char *argv[]) {
-	int childpid;
+	pid_t childpid;
 	char bufferPid[100];
 	char bufferSec[100];
 	int spawns = 5;
@@ -100,8 +100,7 @@ int main (int argc, char *argv[]) {
 		perror(("%s: Error: Failed to create message queue",argv[0]));
 		return 1;
 	}
-	
-	("msg queue is %d\n", msgqid);
+	printf("msg queue is %d\n", msgqid);
 	
 	while (spawnCount < spawns){
 	childpid = fork();
