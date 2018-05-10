@@ -169,5 +169,13 @@ int main (int argc, char *argv[]) {
   wait(NULL);
   spawnCount--;
   }
+  if (shmdt (sharedClock)) {
+    perror (("%s: Error: Failed to detach shared memory", argv[0]));
+    exit(EXIT_FAILURE);
+  }
+  if ((shmctl (id, IPC_RMID, NULL)) == -1) {
+    perror (("%s: Error: Failed to destroy shared memory", argv[0]));
+    exit(EXIT_FAILURE);
+  }
   return 0;
 }
