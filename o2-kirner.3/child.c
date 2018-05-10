@@ -24,11 +24,10 @@ typedef struct{
 typedef struct{
   int nano;
   int sec;
-}clock;
+}clockS;
 typedef struct{
   long type;
   info myinfo;
-  bool wasKilled = 0;
 }mymsg;
 
 int main () {
@@ -36,11 +35,11 @@ int main () {
   int id;
   
   
-  if((id = shmget(411, sizeof(clock), IPC_CREAT|0666)) == -1) {
+  if((id = shmget(411, sizeof(clockS), IPC_CREAT|0666)) == -1) {
     perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
-  if((clock *sharedClock= (clock *)shmat(id, NULL, 0)) == (void *)-1){
+  if((clockS *sharedClock= (clockS *)shmat(id, NULL, 0)) == (void *)-1){
     perror(("%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
       perror((%s: Error: Failed to remove memory segment", argv[0]));
