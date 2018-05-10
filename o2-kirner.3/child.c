@@ -13,36 +13,35 @@
 #include <sys/sem.h>
 #include <sys/msg.h>
 #include <sys/errno.h>
-typedef struct info{
+typedef struct{
   int childPid;
   int worked;
   int bornSec;
   int bornNano;
   int diedSec;
   int diedNano
-};
-typedef struct clock{
-  int nano = 0;
-  int sec = 0;
-};
-typedef struct mymsg{
+}info;
+typedef struct{
+  int nano;
+  int sec;
+}clock;
+typedef struct{
   long type;
   info myinfo;
   bool wasKilled = 0;
-};
+}mymsg;
 
 int main () {
   info myinfo;
   int id;
-  clock *sharedClock;
   
   
   if((id = shmget(411, sizeof(clock), IPC_CREAT|0666)) == -1) {
-    perror((%s: Error: Failed to attached shared memory segment", argv[0]));
+    perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
-  if((sharedClock= (clock *)shmat(id, NULL, 0)) == (void *)-1){
-    perror((%s: Error: Failed to attach shared memory segment", argv[0]));
+  if((clock *sharedClock= (clock *)shmat(id, NULL, 0)) == (void *)-1){
+    perror(("%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
       perror((%s: Error: Failed to remove memory segment", argv[0]));
     return 1;
