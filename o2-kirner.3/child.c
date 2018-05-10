@@ -1,5 +1,4 @@
 #include <errno.h>
-#include <sys/shm.h>
 #include <string.h>
 #include <time.h>
 #include <sys/ipc.h>
@@ -20,7 +19,7 @@ typedef struct{
   int bornSec;
   int bornNano;
   int diedSec;
-  int diedNano;
+  int diedNano
 }info;
 typedef struct{
   int nano;
@@ -65,7 +64,7 @@ int main (int argc, char *argv[]) {
       }
 	  return 1;
     }
-  printf("%d %d %d", myinfo.childPid, sharedClock->sec, sharedClock->nano);
+  printf("%d %d %d\n", myinfo.childPid, sharedClock->sec, sharedClock->nano);
   if ((msgrcv (msgqid2, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
 	  if (shmdt (sharedClock)) {
