@@ -39,7 +39,7 @@ int main (int argc, char *argv[]) {
 	int msgqid3;
 	int msgqid4;
 	mymsg dummyMes;
-	myinfo.childPid = int(argv[1]);
+	myinfo.childPid = atoi(argv[1]);
 	if((id = shmget(411, sizeof(clockS), IPC_CREAT|0666)) == -1) {
 		perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
 		return 1;
@@ -89,7 +89,7 @@ int main (int argc, char *argv[]) {
 			}
 			return 1;
 		}
-		if(sharedClock->sec > int(argv[2])){
+		if(sharedClock->sec > atoi(argv[2])){
 			break;
 		}
 		if(myinfo.worked - stuffToDo > 100000){
@@ -99,7 +99,7 @@ int main (int argc, char *argv[]) {
 				sharedClock->sec ++;
 			}
 			myinfo.worked += 100000;
-			if(sharedClock->sec > int(argv[2])){
+			if(sharedClock->sec > atoi(argv[2])){
 				break;
 			}
 			msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),	0);
