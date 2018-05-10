@@ -87,6 +87,7 @@ int main (int argc, char *argv[]) {
 // create message queue
   msgqid = msgget (412, IPC_CREAT | 0777);
   msgqid2 = msgget (413, IPC_CREAT | 0777);
+  msgqid3 = msgget (414, IPC_CREAT | 0777);
   if (msgqid < 0) {
     perror(("%s: Error: Failed to create message queue",argv[0]));
     return 1;
@@ -144,7 +145,7 @@ int main (int argc, char *argv[]) {
   }
   msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
   while(spawnCount){
-    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
+    if ((msgrcv (msgqid3, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
 	  if (shmdt (sharedClock)) {
         perror (("%s: Error: Failed to detach shared memory", argv[0]));
@@ -156,7 +157,7 @@ int main (int argc, char *argv[]) {
       }
 	  return 1;
     }
-	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
+	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
     wait(NULL);
 	spawnCount--;
 	msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
