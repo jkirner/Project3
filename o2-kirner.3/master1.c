@@ -137,7 +137,7 @@ int main (int argc, char *argv[]) {
 //	run a child
 	if (childpid	== 0){
 	int name = getpid();
-		char *args[]={"./child", name, secs};
+		char *args[]={"./child", name, secs, NULL};
 		execvp(args[0], args); 
 	}
 	if(spawnCount != spawns){
@@ -222,7 +222,7 @@ int main (int argc, char *argv[]) {
 	}
 	if (childpid	== 0){
 	int name = getpid();
-		char *args[]={"./child", name, secs};
+		char *args[]={"./child", name, secs, NULL};
 		execvp(args[0], args); 
 	}
 	else{
