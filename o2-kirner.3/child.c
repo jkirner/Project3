@@ -39,6 +39,7 @@ int main (int argc, char *argv[]) {
 	int msgqid3;
 	int msgqid4;
 	mymsg dummyMes;
+	myinfo.childPid = atoi(argv[1]);
 	if((id = shmget(411, sizeof(clockS), IPC_CREAT|0666)) == -1) {
 		perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
 		return 1;
@@ -51,6 +52,7 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 	myinfo.childPid = atoi(argv[1]);
+	printf("%s/n", argv[1]);
 	msgqid = msgget (412, IPC_CREAT | 0777);
 	msgqid2 = msgget (413, IPC_CREAT | 0777);
 	msgqid3 = msgget (414, IPC_CREAT | 0777);
@@ -71,7 +73,7 @@ int main (int argc, char *argv[]) {
 	myinfo.bornSec = sharedClock->sec;
 	myinfo.bornNano = sharedClock->nano;
 	msgsnd (msgqid4, &dummyMes, sizeof(dummyMes),	0);
-	srand(time(NULL));
+	srand(myinfo.childPid);
 	int stuffToDo = rand()%1000000 + 1;
 	myinfo.worked = 0;
 	while(1){
@@ -113,6 +115,7 @@ int main (int argc, char *argv[]) {
 		}
 	}
 	dummyMes.myinfo = myinfo;
+	printf("%d", myinfo.worked);
 	msgsnd (msgqid3, &dummyMes, sizeof(dummyMes),	0);
 // wait for msg
 	return 0;
