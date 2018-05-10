@@ -50,6 +50,7 @@ int main (int argc, char *argv[]) {
     return 1;
   }
   myinfo.childPid = getpid();
+
   msgqid = msgget (412, IPC_CREAT | 0777);
   msgqid2 = msgget (413, IPC_CREAT | 0777);
   
@@ -65,6 +66,8 @@ int main (int argc, char *argv[]) {
       }
 	  return 1;
     }
+  myinfo.bornSec = sharedClock->sec;
+  myinfo.bornNano = sharedClock->nano;
   printf("%d %d %d\n", myinfo.childPid, sharedClock->sec, sharedClock->nano);
   if ((msgrcv (msgqid2, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
