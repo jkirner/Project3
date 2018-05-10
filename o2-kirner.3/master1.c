@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
       switch(option){
         case 's': spawns = atoi(optarg);
         break;
-	case 'l': *fileName = optarg;
+	case 'l': fileName = optarg;
 	break;
 	case 't': secs = atoi(optarg);
 	break; 
@@ -69,11 +69,11 @@ int main (int argc, char *argv[]) {
     perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
-  clockS *sharedClock= (clockS *)shmat(id, NULL, 0); 
-  if(sharedClock == (void *)-1){
+
+  if((clockS *sharedClock= (clockS *)shmat(id, NULL, 0)) == (void *)-1){
     perror(("%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
-      perror(("%s: Error: Failed to remove memory segment", argv[0]));
+      perror((%s: Error: Failed to remove memory segment", argv[0]));
     return 1;
   }
   int a;
@@ -95,8 +95,14 @@ int main (int argc, char *argv[]) {
   while (spawnCount < spawns){
     if((childpid = fork()) == -1){
       perror(("%s: Error: Failed to create child process", argv[0]));
-      if (detachandremove(id, sharedClock) == -1)
-        perror(("%s: Error: Failed to destory shared memory segment"));
+      if (shmdt (sharedClock)) {
+        perror (("%s: Error: Failed to detach shared memory", argv[0]));
+        exit(EXIT_FAILURE);
+      }
+      if ((shmctl (id, IPC_RMID, NULL)) == -1) {
+        perror (("%s: Error: Failed to destroy shared memory", argv[0]));
+        exit(EXIT_FAILURE);
+      }
       return 1;
     }
     if (childpid == 0){
@@ -109,28 +115,47 @@ int main (int argc, char *argv[]) {
   if (childpid  == 0){
     char *args[]={"./child",NULL};
     execvp(args[0], args); 
+    break;
   }
   if(spawnCount != spawns){
     perror(("%s: Error: Spawn count did not work as planned", argv[0]));
-    if (detachandremove(id, sharedClock) == -1)
-      perror(("%s: Error: Failed to destory shared memory segment"));
+    if (shmdt (sharedClock)) {
+      perror (("%s: Error: Failed to detach shared memory", argv[0]));
+      exit(EXIT_FAILURE);
+    }
+    if ((shmctl (id, IPC_RMID, NULL)) == -1) {
+      perror (("%s: Error: Failed to destroy shared memory", argv[0]));
+      exit(EXIT_FAILURE);
+    }
     return 1;
   }
   if (childpid == 0) {
     perror(("%s: Error: Unexpected child", argv[0]));
-    if (detachandremove(id, sharedClock) == -1)
-      perror(("%s: Error: Failed to destory shared memory segment"));
+    if (shmdt (sharedClock)) {
+      perror (("%s: Error: Failed to detach shared memory", argv[0]));
+      exit(EXIT_FAILURE);
+    }
+    if ((shmctl (id, IPC_RMID, NULL)) == -1) {
+      perror (("%s: Error: Failed to destroy shared memory", argv[0]));
+      exit(EXIT_FAILURE);
+    }
     return 1;
   }
   msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
   while(spawnCount){
-    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
+    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
-	  if (detachandremove(id, sharedClock) == -1)
-        perror(("%s: Error: Failed to destory shared memory segment"));
+	  if (shmdt (sharedClock)) {
+        perror (("%s: Error: Failed to detach shared memory", argv[0]));
+        exit(EXIT_FAILURE);
+      }
+      if ((shmctl (id, IPC_RMID, NULL)) == -1) {
+        perror (("%s: Error: Failed to destroy shared memory", argv[0]));
+        exit(EXIT_FAILURE);
+      }
 	  return 1;
     }
-	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
+	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock.sec, sharedClock.nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
     wait(NULL);
 	spawnCount--;
 	msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
