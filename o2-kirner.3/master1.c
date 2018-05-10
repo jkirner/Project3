@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
       switch(option){
         case 's': spawns = atoi(optarg);
         break;
-	case 'l': fileName = optarg;
+	case 'l': *fileName = optarg;
 	break;
 	case 't': secs = atoi(optarg);
 	break; 
@@ -69,7 +69,7 @@ int main (int argc, char *argv[]) {
     perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
-  clockS *sharedClock= (clockS *)shmat(id, NULL, 0) 
+  clockS *sharedClock= (clockS *)shmat(id, NULL, 0); 
   if(sharedClock == (void *)-1){
     perror(("%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
