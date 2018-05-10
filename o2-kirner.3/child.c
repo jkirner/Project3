@@ -36,7 +36,7 @@ int main (int argc, char *argv[]) {
   int id;
   int msgqid;
   int msgqid2;
-  int msgqid3;
+  int msgqid3;pc
   mymsg dummyMes;
   
   if((id = shmget(411, sizeof(clockS), IPC_CREAT|0666)) == -1) {
