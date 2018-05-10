@@ -109,7 +109,6 @@ int main (int argc, char *argv[]) {
   if (childpid  == 0){
     char *args[]={"./child",NULL};
     execvp(args[0], args); 
-    break;
   }
   if(spawnCount != spawns){
     perror(("%s: Error: Spawn count did not work as planned", argv[0]));
@@ -125,13 +124,13 @@ int main (int argc, char *argv[]) {
   }
   msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
   while(spawnCount){
-    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0)) == -1) {
+    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
 	  if (detachandremove(id, sharedClock) == -1)
         perror(("%s: Error: Failed to destory shared memory segment"));
 	  return 1;
     }
-	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock.sec, sharedClock.nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
+	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
     wait(NULL);
 	spawnCount--;
 	msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
