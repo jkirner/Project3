@@ -100,7 +100,8 @@ int main (int argc, char *argv[]) {
 		perror(("%s: Error: Failed to create message queue",argv[0]));
 		return 1;
 	}
-	printf("msg queue is %d\n", msgqid);
+	
+	("msg queue is %d\n", msgqid);
 	
 	while (spawnCount < spawns){
 	childpid = fork();
