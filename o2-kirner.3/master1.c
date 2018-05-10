@@ -93,7 +93,8 @@ int main (int argc, char *argv[]) {
   printf("msg queue is %d\n", msgqid);
   
   while (spawnCount < spawns){
-    if((childpid = fork()) == -1){
+	childpid = fork();
+    if(childpid == -1){
       perror(("%s: Error: Failed to create child process", argv[0]));
       if (shmdt (sharedClock)) {
         perror (("%s: Error: Failed to detach shared memory", argv[0]));
