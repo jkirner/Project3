@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <sys/shm.h>
 #include <string.h>
 #include <time.h>
 #include <sys/ipc.h>

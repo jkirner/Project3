@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <sys/shm.h>
 #include <string.h>
 #include <time.h>
 #include <sys/ipc.h>
@@ -31,7 +32,7 @@ typedef struct{
 }mymsg;
 
 int main (int argc, char *argv[]) {
-  pid_t childpid = 0;
+  pid_t childpid;
   int spawns = 5;
   int secs = 20;
   char fileName[100]= "log.txt";
