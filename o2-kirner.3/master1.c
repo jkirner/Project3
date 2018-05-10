@@ -111,7 +111,7 @@ int main (int argc, char *argv[]) {
     }
 	printf("hello");
     msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
-    printf("fuckoff
+    printf("fuckoff");
 	spawnCount++;
   }
 //  run a child
