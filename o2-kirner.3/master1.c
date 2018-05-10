@@ -95,7 +95,6 @@ int main (int argc, char *argv[]) {
   
   while (spawnCount < spawns){
 	childpid = fork();
-	printf("Hi");
     if(childpid == -1){
       perror(("%s: Error: Failed to create child process", argv[0]));
       if (shmdt (sharedClock)) {
@@ -108,13 +107,10 @@ int main (int argc, char *argv[]) {
       }
       return 1;
     }
-	printf("weel");
     if (childpid == 0){
       break;
     }
-	printf("hello");
     msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
-    printf("fuckoff");
 	spawnCount++;
   }
 //  run a child
