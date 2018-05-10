@@ -13,16 +13,22 @@
 #include <sys/sem.h>
 #include <sys/msg.h>
 #include <sys/errno.h>
-
+typedef struct;
 struct info{
   int childPid;
   int worked;
-  int born;
-  int died;
+  int bornSec;
+  int bornNano;
+  int diedSec;
+  int diedNano
 }
-
+struct clock{
+  int nano = 0;
+  int sec = 0;
+}
 struct mymsg{
-  info myInfo;
+  long type;
+  info myinfo;
   bool wasKilled = 0;
 }
 
@@ -32,6 +38,7 @@ int main (int argc, char *argv[]) {
   int secs = 20;
   char fileName[100]= "log.txt";
   int option;
+  clock *sharedClock;
 
 // This allows for the -n and help if you dont know what to do
   while((option = getopt(argc, argv, "h:l:s:t")) != -1){
@@ -59,22 +66,14 @@ int main (int argc, char *argv[]) {
     perror (("%s: Error: Command line arguement following -t mus be a numerical value greater than 0", argv[0]));
     return 1;
   }
-  int *sharedSeconds = 0;
-  int *sharedNano = 0;
   int id;
 
-  if((id = shmget(IPC_PRIVATE, sizeof(int), PERM)) == -1) {
+  if((id = shmget(411, sizeof(clock), IPC_CREAT|0666)) == -1) {
     perror((%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
 
-  if((sharedSecond = (int *)shmat(id, NULL, 0)) == (void *)-1){
-    perror((%s: Error: Failed to attach shared memory segment", argv[0]));
-    if(shmctl(id, IPC_RMID, NULL) == -1)
-      perror((%s: Error: Failed to remove memory segment", argv[0]));
-    return 1;
-  }
-  if((sharedNano = (int *)shmat(id, NULL, 0)) == (void *)-1{ 
+  if((sharedClock= (clock *)shmat(id, NULL, 0)) == (void *)-1){
     perror((%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
       perror((%s: Error: Failed to remove memory segment", argv[0]));
@@ -84,8 +83,12 @@ int main (int argc, char *argv[]) {
   int spawnCount = 0;
   int totalSpawns = 0;
   int msgqid;
+  int msgqid2;
+  mymsg dummyMes;
+  dummyMes.type = 2;
 // create message queue
-  msgqid = msgget(IPC_PRIVATE, MSGPERM|IPC_CREAT|IPCEXCL);
+  msgqid = msgget (412, IPC_CREAT | 0777);
+  msgqid2 = msgget (413, IPC_CREAT | 0777);
   if (msgqid < 0) {
     perror(("%s: Error: Failed to create message queue",argv[0]));
     return 1;
@@ -95,16 +98,14 @@ int main (int argc, char *argv[]) {
   while (spawnCount < spawns){
     if((childpid = fork()) == -1){
       perror(("%s: Error: Failed to create child process", argv[0]));
-      if (detachandremove(id, sharedSeconds) == -1)
-        perror(("%s: Error: Failed to destory shared memory segment"));
-      if (detachandremove(id, sharedNano) == -1)
+      if (detachandremove(id, sharedClock) == -1)
         perror(("%s: Error: Failed to destory shared memory segment"));
       return 1;
     }
     if (childpid == 0){
       break;
     }
-    
+    msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
     spawnCount++;
   }
 //  run a child
@@ -115,19 +116,28 @@ int main (int argc, char *argv[]) {
   }
   if(spawnCount != spawns){
     perror(("%s: Error: Spawn count did not work as planned", argv[0]));
-    if (detachandremove(id, sharedSeconds) == -1)
-      perror(("%s: Error: Failed to destory shared memory segment"));
-    if (detachandremove(id, sharedNano) == -1)
+    if (detachandremove(id, sharedClock) == -1)
       perror(("%s: Error: Failed to destory shared memory segment"));
     return 1;
   }
   if (childpid == 0) {
     perror(("%s: Error: Unexpected child", argv[0]));
-    if (detachandremove(id, sharedSeconds) == -1)
-      perror(("%s: Error: Failed to destory shared memory segment"));
-    if (detachandremove(id, sharedNano) == -1)
+    if (detachandremove(id, sharedClock) == -1)
       perror(("%s: Error: Failed to destory shared memory segment"));
     return 1;
+  }
+  msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
+  while(spawnCount){
+    if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0)) == -1) {
+      perror(("%s: Error: Failed to recieve message"));
+	  if (detachandremove(id, sharedClock) == -1)
+        perror(("%s: Error: Failed to destory shared memory segment"));
+	  return 1;
+    }
+	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock.sec, sharedClock.nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
+    wait(NULL);
+	spawnCount--;
+	msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
   }
   while (spawnCount > 0){
   wait(NULL);
