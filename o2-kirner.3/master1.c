@@ -264,6 +264,22 @@ int main (int argc, char *argv[]) {
 		perror (("%s: Error: Failed to destroy shared memory", argv[0]));
 		return 1;
 	}
+	if (msgctl(msgqid, IPC_RMID, NULL) == -1) {
+		perror (("%s: Error: Failed to destroy message queue", argv[0]));
+		return 1;
+	}
+	if (msgctl(msgqid2, IPC_RMID, NULL) == -1) {
+		perror (("%s: Error: Failed to destroy message queue", argv[0]));
+		return 1;
+	}
+	if (msgctl(msgqid3, IPC_RMID, NULL) == -1) {
+		perror (("%s: Error: Failed to destroy message queue", argv[0]));
+		return 1;
+	}
+	if (msgctl(msgqid4, IPC_RMID, NULL) == -1) {
+		perror (("%s: Error: Failed to destroy message queue", argv[0]));
+		return 1;
+	}
 	fclose(fp);
 	return 0;
 }
