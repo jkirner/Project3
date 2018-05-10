@@ -139,8 +139,8 @@ int main (int argc, char *argv[]) {
 //	run a child
 	if (childpid	== 0){
 	int name = getpid();
-		snprintf(bufferPid, 100, "%d", name);
-		snprintf(bufferSec, 100, "%d", secs);
+		name = snprintf(bufferPid, 100, "%d", name);
+		secs = snprintf(bufferSec, 100, "%d", secs);
 		char *args[]={"./child", bufferPid, bufferSec, NULL};
 		execvp(args[0], args); 
 	}
@@ -226,8 +226,8 @@ int main (int argc, char *argv[]) {
 	}
 	if (childpid	== 0){
 		int name = getpid();
-		snprintf(bufferPid, 100, "%d", name);
-		snprintf(bufferSec, 100, "%d", secs);
+		name = snprintf(bufferPid, 100, "%d", name);
+		secs = snprintf(bufferSec, 100, "%d", secs);
 		char *args[]={"./child", bufferPid, bufferSec, NULL};
 		execvp(args[0], args); 
 	}
