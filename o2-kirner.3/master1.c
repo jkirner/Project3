@@ -16,8 +16,6 @@
 #include <sys/errno.h>
 typedef struct{
 	int childPid;
-	char bufferPid[100];
-	char bufferSec[100];
 	int worked;
 	int bornSec;
 	int bornNano;
@@ -35,6 +33,8 @@ typedef struct{
 
 int main (int argc, char *argv[]) {
 	pid_t childpid;
+	char bufferPid[100];
+	char bufferSec[100];
 	int spawns = 5;
 	int secs = 20;
 	char* fileName= "log.txt";
