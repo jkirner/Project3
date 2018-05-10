@@ -243,7 +243,7 @@ int main (int argc, char *argv[]) {
 		tempnano = sharedClock->nano - dummyMes.myinfo.bornNano;
 		if (tempnano < 0){
 			tempsec--;
-			tempnano += 1000000000
+			tempnano += 1000000000;
 		}
 		fprintf(fp,"Master: Child pid %d is terminated at my time %d.%d because the time has expired. It reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
 		wait(NULL);
