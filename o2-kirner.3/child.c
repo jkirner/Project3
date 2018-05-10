@@ -115,6 +115,7 @@ int main (int argc, char *argv[]) {
 		}
 	}
 	dummyMes.myinfo = myinfo;
+	printf("%d", myinfo.worked);
 	msgsnd (msgqid3, &dummyMes, sizeof(dummyMes),	0);
 // wait for msg
 	return 0;
