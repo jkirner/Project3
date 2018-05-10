@@ -15,7 +15,7 @@
 #include <sys/msg.h>
 #include <sys/errno.h>
 typedef struct{
-	char* childPid;
+	int childPid;
 	int worked;
 	int bornSec;
 	int bornNano;
@@ -50,7 +50,7 @@ int main (int argc, char *argv[]) {
 			perror(("%s: Error: Failed to remove memory segment", argv[0]));
 		return 1;
 	}
-	myinfo.childPid = argv[1];
+	myinfo.childPid = atoi(argv[1]);
 	msgqid = msgget (412, IPC_CREAT | 0777);
 	msgqid2 = msgget (413, IPC_CREAT | 0777);
 	msgqid3 = msgget (414, IPC_CREAT | 0777);
