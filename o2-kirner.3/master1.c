@@ -158,7 +158,7 @@ int main (int argc, char *argv[]) {
       }
 	  return 1;
     }
-	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
+	printf("Master: Child pid %d is terminated at my time %d.%d because it reached %d, it was born at %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, dummyMes.myinfo.bornSec, dummyMes.myinfo.bornNano);
     wait(NULL);
 	spawnCount--;
 	msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),  0);
