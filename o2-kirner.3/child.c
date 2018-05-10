@@ -92,10 +92,10 @@ int main (int argc, char *argv[]) {
 		if(sharedClock->sec > atoi(argv[2])){
 			break;
 		}
-		if(myinfo.worked - stuffToDo > 100000){
-			sharedClock->nano += 100000;
-			if(sharedClock->nano > 999999999){
-				sharedClock->nano -= 1000000000;
+		if(myinfo.worked - stuffToDo > 100){
+			sharedClock->nano += 100;
+			if(sharedClock->nano > 999999){
+				sharedClock->nano -= 1000000;
 				sharedClock->sec ++;
 			}
 			myinfo.worked += 100000;
@@ -106,8 +106,8 @@ int main (int argc, char *argv[]) {
 		}
 		else{
 			sharedClock->nano += (myinfo.worked - stuffToDo);
-			if(sharedClock->nano > 999999999){
-				sharedClock->nano -= 1000000000;
+			if(sharedClock->nano > 999999){
+				sharedClock->nano -= 1000000;
 				sharedClock->sec ++;
 			}
 			myinfo.worked += (myinfo.worked - stuffToDo);
