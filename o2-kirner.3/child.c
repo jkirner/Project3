@@ -92,7 +92,7 @@ int main (int argc, char *argv[]) {
 		if(sharedClock->sec > atoi(argv[2])){
 			break;
 		}
-		if(myinfo.worked - stuffToDo > 100){
+		if(stuffToDo - myinfo.worked > 100){
 			sharedClock->nano += 100;
 			if(sharedClock->nano > 999999){
 				sharedClock->nano -= 1000000;
@@ -105,7 +105,7 @@ int main (int argc, char *argv[]) {
 			msgsnd (msgqid2, &dummyMes, sizeof(dummyMes),	0);
 		}
 		else{
-			sharedClock->nano += (myinfo.worked - stuffToDo);
+			sharedClock->nano += (stuffToDo - myinfo.worked);
 			if(sharedClock->nano > 999999){
 				sharedClock->nano -= 1000000;
 				sharedClock->sec ++;
