@@ -42,10 +42,10 @@ int main (int argc, char *argv[]) {
       switch(option){
         case 's': spawns = atoi(optarg);
         break;
-	case 'l': *fileName = optarg;
-	break;
-	case 't': secs = atoi(optarg);
-	break; 
+	    case 'l': *fileName = optarg;
+	    break;
+	    case 't': secs = atoi(optarg);
+	    break; 
 
         case 'h': printf("This program has a master program that spawns at default 5 processes.  To change this number you may include -s x where x is the number desired.  The program will also used the file log.txt as default unless you include -l filename less than 100 characters long.  Lastly the program will automatically terminate itself and all children after 20 secounds unless you include -t z where z is the umber of seconds desired.");
         return 1;
@@ -109,8 +109,10 @@ int main (int argc, char *argv[]) {
     if (childpid == 0){
       break;
     }
+	printf("hello");
     msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
-    spawnCount++;
+    printf("fuckoff
+	spawnCount++;
   }
 //  run a child
   if (childpid  == 0){
