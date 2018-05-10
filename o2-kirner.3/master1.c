@@ -258,5 +258,6 @@ int main (int argc, char *argv[]) {
 		perror (("%s: Error: Failed to destroy shared memory", argv[0]));
 		return 1;
 	}
+	fclose(fp);
 	return 0;
 }
