@@ -98,7 +98,7 @@ int main (int argc, char *argv[]) {
 				sharedClock->nano -= 1000000;
 				sharedClock->sec ++;
 			}
-			myinfo.worked += 100000;
+			myinfo.worked += 100;
 			if(sharedClock->sec > atoi(argv[2])){
 				break;
 			}
@@ -110,7 +110,7 @@ int main (int argc, char *argv[]) {
 				sharedClock->nano -= 1000000;
 				sharedClock->sec ++;
 			}
-			myinfo.worked += (myinfo.worked - stuffToDo);
+			myinfo.worked +=  (stuffToDo - myinfo.worked);
 			break;
 		}
 	}
