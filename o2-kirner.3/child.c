@@ -75,6 +75,7 @@ int main (int argc, char *argv[]) {
 	int stuffToDo = rand()%1000000 + 1;
 	myinfo.worked = 0;
 	while(1){
+		printf("%s\n", argv[1]);
 		if ((msgrcv (msgqid2, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
 			perror(("%s: Error: Failed to recieve message"));
 			if (shmdt (sharedClock)) {
