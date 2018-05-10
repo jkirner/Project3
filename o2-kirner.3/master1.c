@@ -16,6 +16,8 @@
 #include <sys/errno.h>
 typedef struct{
 	int childPid;
+	char bufferPid[100];
+	char bufferSec[100];
 	int worked;
 	int bornSec;
 	int bornNano;
@@ -137,7 +139,9 @@ int main (int argc, char *argv[]) {
 //	run a child
 	if (childpid	== 0){
 	int name = getpid();
-		char *args[]={"./child", name, secs, NULL};
+		snprintf(bufferPid, 100, "%d", name);
+		snprintf(bufferSec, 100, "%d", secs);
+		char *args[]={"./child", bufferPid, bufferSec, NULL};
 		execvp(args[0], args); 
 	}
 	if(spawnCount != spawns){
@@ -221,8 +225,10 @@ int main (int argc, char *argv[]) {
 		}
 	}
 	if (childpid	== 0){
-	int name = getpid();
-		char *args[]={"./child", name, secs, NULL};
+		int name = getpid();
+		snprintf(bufferPid, 100, "%d", name);
+		snprintf(bufferSec, 100, "%d", secs);
+		char *args[]={"./child", bufferPid, bufferSec, NULL};
 		execvp(args[0], args); 
 	}
 	else{
