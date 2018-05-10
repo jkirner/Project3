@@ -15,7 +15,7 @@
 #include <sys/msg.h>
 #include <sys/errno.h>
 typedef struct{
-	char* childPid;
+	int childPid;
 	int worked;
 	int bornSec;
 	int bornNano;
@@ -32,7 +32,7 @@ typedef struct{
 }mymsg;
 
 int main (int argc, char *argv[]) {
-	pid_t childpid;
+	int childpid;
 	char bufferPid[100];
 	char bufferSec[100];
 	int spawns = 5;
@@ -183,7 +183,7 @@ int main (int argc, char *argv[]) {
 			tempsec--;
 			tempnano += 1000000000;
 		}
-		fprintf(fp,"Master: Child pid %s is terminated at my time %d.%d because it reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
+		fprintf(fp,"Master: Child pid %d is terminated at my time %d.%d because it reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
 			wait(NULL);
 		if(sharedClock->sec < secs){
 			sharedClock->nano += 100;
@@ -251,7 +251,7 @@ int main (int argc, char *argv[]) {
 			tempsec--;
 			tempnano += 1000000;
 		}
-		fprintf(fp,"Master: Child pid %s is terminated at my time %d.%d because the time has expired. It reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
+		fprintf(fp,"Master: Child pid %d is terminated at my time %d.%d because the time has expired. It reached %d, it lived for %d.%d\n", dummyMes.myinfo.childPid, sharedClock->sec, sharedClock->nano, dummyMes.myinfo.worked, tempsec, tempnano);
 		wait(NULL);
 		spawnCount--;
 	}
