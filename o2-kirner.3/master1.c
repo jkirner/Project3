@@ -69,11 +69,11 @@ int main (int argc, char *argv[]) {
     perror(("%s: Error: Failed to attached shared memory segment", argv[0]));
     return 1;
   }
-
-  if((clockS *sharedClock= (clockS *)shmat(id, NULL, 0)) == (void *)-1){
+  clockS *sharedClock= (clockS *)shmat(id, NULL, 0) 
+  if(sharedClock == (void *)-1){
     perror(("%s: Error: Failed to attach shared memory segment", argv[0]));
     if(shmctl(id, IPC_RMID, NULL) == -1)
-      perror((%s: Error: Failed to remove memory segment", argv[0]));
+      perror(("%s: Error: Failed to remove memory segment", argv[0]));
     return 1;
   }
   int a;
