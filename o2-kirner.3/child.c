@@ -50,7 +50,7 @@ int main (int argc, char *argv[]) {
 			perror(("%s: Error: Failed to remove memory segment", argv[0]));
 		return 1;
 	}
-	myinfo.childPid = stoi(argv[1]);
+	myinfo.childPid = atoi(argv[1]);
 	msgqid = msgget (412, IPC_CREAT | 0777);
 	msgqid2 = msgget (413, IPC_CREAT | 0777);
 	msgqid3 = msgget (414, IPC_CREAT | 0777);
@@ -87,7 +87,7 @@ int main (int argc, char *argv[]) {
 			}
 			return 1;
 		}
-		if(sharedClock->sec > stoi(argv[2])){
+		if(sharedClock->sec > atoi(argv[2])){
 			break;
 		}
 		if(stuffToDo - myinfo.worked > 100000){
