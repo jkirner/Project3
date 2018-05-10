@@ -53,6 +53,7 @@ int main (int argc, char *argv[]) {
 
   msgqid = msgget (412, IPC_CREAT | 0777);
   msgqid2 = msgget (413, IPC_CREAT | 0777);
+  msgqid3 = msgget (414, IPC_CREAT | 0777);
   
   if ((msgrcv (msgqid, &dummyMes, sizeof(dummyMes), 0, 0)) == -1) {
       perror(("%s: Error: Failed to recieve message"));
@@ -85,7 +86,8 @@ int main (int argc, char *argv[]) {
   sharedClock->nano += stuffToDo;
   
   dummyMes.myinfo = myinfo;
-  msgsnd (msgqid, &dummyMes, sizeof(dummyMes),  0);
+  msgsnd (msgqid3, &dummyMes, sizeof(dummyMes),  0);
 // wait for msg
   return 0;
 }
+
